@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import Versions from './components/Versions.vue'
 const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
+const title = import.meta.env.RENDERER_VUE_APP_TITLE
+const mode = import.meta.env.MODE
+console.log(import.meta.env)
 </script>
 
 <template>
   <img alt="logo" class="logo" src="./assets/electron.svg" />
-  <div class="creator">Powered by electron-vite</div>
+  <div class="creator">{{ title }}</div>
+  <div class="creator">{{ mode }}</div>
   <div class="text">
     Build an Electron app with
     <span class="vue">Vue</span>
@@ -22,6 +26,7 @@ const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
     </div>
     <div class="action">
       <router-link to="/test">Test</router-link>
+      <router-link to="/login">Login</router-link>
     </div>
     <router-view />
   </div>

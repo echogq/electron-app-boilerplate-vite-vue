@@ -1,9 +1,9 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, globalShortcut } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
-function createWindow(): void {
+function createWindow(): BrowserWindow {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 900,
@@ -33,6 +33,11 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
+  // 打开控制台
+  //ipcMain.on('openDevTools', () => {
+  //  mainWindow.webContents.openDevTools()
+  //})
+  return mainWindow
 }
 
 // This method will be called when Electron has finished
@@ -51,14 +56,38 @@ app.whenReady().then(() => {
 
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
+  //createWindow()
+  const win = createWindow()
 
-  createWindow()
+  // 注册一个'CommandOrControl+X' 快捷键监听器打开控制台
+  const ret = globalShortcut.register('CommandOrControl+Alt+C', () => {
+    if (win) {
+      win.webContents.openDevTools()
+    }
+  })
+
+  if (!ret) {
+    console.log('registration failed')
+  }
+
+  // 检查快捷键是否注册成功
+  console.log(globalShortcut.isRegistered('CommandOrControl+Alt+C'))
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createWindow()
+    }
   })
+})
+
+app.on('will-quit', () => {
+  // 注销快捷键
+  globalShortcut.unregister('CommandOrControl+Alt+C')
+
+  // 注销所有快捷键
+  globalShortcut.unregisterAll()
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -70,5 +99,6 @@ app.on('window-all-closed', () => {
   }
 })
 
+// 打开控制台
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.

@@ -1,8 +1,9 @@
 import axios from 'axios'
 //import { checkSystemProxy } from './checkProxy'
+import { config } from '@renderer/config'
 
 const request = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: config.apiUrl,
   timeout: 5000
 })
 

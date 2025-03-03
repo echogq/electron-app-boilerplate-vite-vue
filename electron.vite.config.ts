@@ -1,11 +1,14 @@
 import { resolve } from 'path'
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
 import vue from '@vitejs/plugin-vue'
+import Icons from 'unplugin-icons/vite'
+import IconsResolver from 'unplugin-icons/resolver'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 let publicDir = resolve(__dirname, 'resources')
 let envDir = resolve(__dirname, 'build')
+//const pathSrc = resolve(__dirname, 'src/renderer/src')
 export default defineConfig({
   main: {
     plugins: [externalizeDepsPlugin()]
@@ -16,6 +19,7 @@ export default defineConfig({
   renderer: {
     publicDir,
     envDir,
+    envPrefix: 'RENDERER_',
     resolve: {
       alias: {
         '@renderer': resolve('src/renderer/src'),
@@ -30,7 +34,7 @@ export default defineConfig({
     server: {
       proxy: {
         '/api': {
-          target: 'http://localhost:3000',
+          target: 'http://localhost:8080/dev-api/s/api',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, '')
         }
@@ -39,10 +43,25 @@ export default defineConfig({
     plugins: [
       vue(),
       AutoImport({
-        resolvers: [ElementPlusResolver()]
+        // 自动导入 Vue 相关函数，如：ref, reactive, toRef 等
+        imports: ['vue'],
+        resolvers: [
+          ElementPlusResolver(),
+          // 自动导入 Icons 组件
+          IconsResolver({ prefix: 'icon' })
+        ]
+        //dts: resolve(pathSrc, 'auto-imports.d.ts')
       }),
       Components({
-        resolvers: [ElementPlusResolver()]
+        resolvers: [
+          // 自动 注册Icons 组件
+          IconsResolver({ enabledCollections: ['ep'] }),
+          // 自动导入 ElementPlus 组件
+          ElementPlusResolver()
+        ]
+      }),
+      Icons({
+        autoInstall: true
       })
     ]
   }
