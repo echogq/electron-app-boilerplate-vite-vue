@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Versions from './components/Versions.vue'
-
 const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
 </script>
 
@@ -21,6 +20,10 @@ const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
     <div class="action">
       <a target="_blank" rel="noreferrer" @click="ipcHandle">Send IPC</a>
     </div>
+    <div class="action">
+      <router-link to="/test">Test</router-link>
+    </div>
+    <router-view />
   </div>
   <Versions />
 </template>

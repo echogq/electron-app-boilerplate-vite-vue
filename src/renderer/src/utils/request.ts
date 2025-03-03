@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { checkSystemProxy } from './checkProxy'
+//import { checkSystemProxy } from './checkProxy'
 
 const request = axios.create({
   baseURL: 'http://localhost:3000',
@@ -7,10 +7,10 @@ const request = axios.create({
 })
 
 // 检查系统代理设置
-const proxySettings = checkSystemProxy()
-if (proxySettings.httpProxy || proxySettings.httpsProxy) {
-  console.warn('System proxy detected:', proxySettings)
-}
+//const proxySettings = checkSystemProxy()
+//if (proxySettings.httpProxy || proxySettings.httpsProxy) {
+//  console.warn('System proxy detected:', proxySettings)
+//}
 
 request.interceptors.request.use(
   (config) => {

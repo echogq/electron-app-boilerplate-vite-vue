@@ -1,7 +1,11 @@
 import { resolve } from 'path'
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
 import vue from '@vitejs/plugin-vue'
-
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+let publicDir = resolve(__dirname, 'resources')
+let envDir = resolve(__dirname, 'build')
 export default defineConfig({
   main: {
     plugins: [externalizeDepsPlugin()]
@@ -10,6 +14,8 @@ export default defineConfig({
     plugins: [externalizeDepsPlugin()]
   },
   renderer: {
+    publicDir,
+    envDir,
     resolve: {
       alias: {
         '@renderer': resolve('src/renderer/src'),
@@ -21,6 +27,23 @@ export default defineConfig({
         '@api': resolve('src/renderer/src/api')
       }
     },
-    plugins: [vue()]
+    server: {
+      proxy: {
+        '/api': {
+          target: 'http://localhost:3000',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, '')
+        }
+      }
+    },
+    plugins: [
+      vue(),
+      AutoImport({
+        resolvers: [ElementPlusResolver()]
+      }),
+      Components({
+        resolvers: [ElementPlusResolver()]
+      })
+    ]
   }
 })
