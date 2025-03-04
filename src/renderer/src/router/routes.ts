@@ -1,0 +1,19 @@
+// 路由配置
+export const AppRoutes = [
+  {
+    path: '/',
+    component: () => import('@views/Home.vue')
+  },
+  {
+    path: '/login',
+    component: () => import('@views/Login.vue')
+  },
+  {
+    path: '/register',
+    component: () => import('@views/Register.vue')
+  },
+  {
+    path: '/test',
+    component: () => import('@views/Test.vue')
+  }
+]

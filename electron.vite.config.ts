@@ -28,7 +28,8 @@ export default defineConfig({
         '@components': resolve('src/renderer/src/components'),
         '@store': resolve('src/renderer/src/store'),
         '@utils': resolve('src/renderer/src/utils'),
-        '@api': resolve('src/renderer/src/api')
+        '@api': resolve('src/renderer/src/api'),
+        '@assets': resolve('src/renderer/src/assets')
       }
     },
     server: {

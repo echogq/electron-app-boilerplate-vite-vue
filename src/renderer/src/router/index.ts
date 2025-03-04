@@ -1,22 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { url } from './url'
+import { AppRoutes } from './routes'
+import { beforeGuides, afterGuides } from './guides'
 
 const router = createRouter({
   history: createWebHistory(),
-  routes: [
-    {
-      path: url.test,
-      component: () => import('@views/Test.vue')
-    },
-    {
-      path: url.home,
-      component: () => import('@views/Home.vue')
-    },
-    {
-      path: url.login,
-      component: () => import('@views/Login.vue')
-    }
-  ]
+  routes: AppRoutes
 })
+// 导航守卫
+router.beforeEach(beforeGuides)
+router.afterEach(afterGuides)
 
 export default router

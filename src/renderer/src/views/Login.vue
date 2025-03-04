@@ -2,10 +2,6 @@
   <div id="login">
     <div class="el-card is-always-shadow login-card">
       <div class="el-card__body">
-        <div class="login-cover">
-          <h1 class="login-title">ElementAdmin</h1>
-          <h4 class="login-subtitle">基于Vue3、Elementplus 后台解决方案</h4>
-        </div>
         <form class="el-form el-form--default el-form--label-right login-form">
           <h3 class="title">用户登录</h3>
           <el-form-item
@@ -35,10 +31,19 @@
             <el-button type="primary" style="width: 100%; height: 45px">登录系统</el-button>
           </el-form-item>
           <el-link type="primary" underline>忘记密码</el-link>
+          <el-link type="primary" underline @click="goHome" class="ml-20 float-right"
+            >回首页</el-link
+          >
         </form>
       </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
+const router = useRouter()
+const goHome = () => {
+  router.push('/')
+}
+</script>
