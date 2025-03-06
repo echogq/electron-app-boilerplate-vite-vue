@@ -94,6 +94,8 @@ code {
   margin: -6px;
   flex-wrap: wrap;
   justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
 }
 
 .action {
