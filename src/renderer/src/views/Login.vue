@@ -18,7 +18,7 @@
             v-model="loginForm.password"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="captcha">
+        <el-form-item prop="code">
           <el-input
             :prefix-icon="Search"
             placeholder="验证码"
@@ -35,9 +35,9 @@
             <div v-if="isDisabled" class="countdown-overlay">{{ countdown }}s</div>
           </div>
         </el-form-item>
-        <el-checkbox>记住密码</el-checkbox>
+        <el-checkbox v-model="loginForm.rememberMe">记住密码</el-checkbox>
         <el-form-item>
-          <el-button type="primary" style="width: 100%; height: 45px" @click="login"
+          <el-button type="primary" style="width: 100%; height: 45px" @click="handleLoginClick"
             >登录系统</el-button
           >
         </el-form-item>
@@ -53,15 +53,15 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { User, Lock, Search } from '@element-plus/icons-vue'
-import { ref, reactive, onUnmounted, getCurrentInstance } from 'vue'
-import { getCaptcha, login } from '@renderer/api/login'
-const { proxy } = getCurrentInstance()
+import { ref, reactive, onUnmounted } from 'vue'
+import { getCaptcha } from '@renderer/api/login'
+import { useUserStore } from '@renderer/store/modules/user'
+const useStore = useUserStore()
 const router = useRouter()
 const goHome = () => {
   router.push('/')
 }
 
-const uuid = ref('')
 const captchaImg = ref('')
 const countdown = ref(0)
 const isDisabled = ref(false)
@@ -69,9 +69,9 @@ const timer = ref()
 
 const getCode = () => {
   if (isDisabled.value) return
-  getCaptcha().then((res) => {
-    captchaImg.value = 'data:image/gif;base64,' + res.data.img
-    uuid.value = res.data.uuid
+  getCaptcha().then((res: any) => {
+    captchaImg.value = 'data:image/gif;base64,' + res.img
+    loginForm.uuid = res.uuid
   })
 }
 
@@ -81,21 +81,22 @@ const handleCodeClick = () => {
   //startCountdown()
 }
 
-const startCountdown = () => {
-  isDisabled.value = true
-  countdown.value = 60
-  timer.value = setInterval(() => {
-    countdown.value--
-    if (countdown.value <= 0) {
-      clearInterval(timer.value)
-      isDisabled.value = false
-    }
-  }, 1000)
-}
+// const startCountdown = () => {
+//   isDisabled.value = true
+//   countdown.value = 60
+//   timer.value = setInterval(() => {
+//     countdown.value--
+//     if (countdown.value <= 0) {
+//       clearInterval(timer.value)
+//       isDisabled.value = false
+//     }
+//   }, 1000)
+// }
 
 const loginForm = reactive({
-  username: '',
-  password: '',
+  username: 'admin',
+  password: 'admin123',
+  rememberMe: false,
   code: '',
   uuid: ''
 })
@@ -103,13 +104,22 @@ const loginForm = reactive({
 const loginRules = reactive({
   username: [{ required: true, message: '请输入账号', trigger: 'blur' }],
   password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-  code: [{ required: true, message: '请输入验证码', trigger: 'blur' }]
+  code: [{ required: true, message: '请输入验证码', trigger: 'change' }]
 })
 const loginFormRef = ref()
-const login = () => {
+const handleLoginClick = () => {
+  console.log('userStore', useStore.token)
   loginFormRef.value.validate((valid) => {
     if (valid) {
-      console.log('submit!')
+      console.log('uuid', loginForm.uuid)
+      useStore
+        .login(loginForm)
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err: any) => {
+          console.log(err)
+        })
     }
   })
 }

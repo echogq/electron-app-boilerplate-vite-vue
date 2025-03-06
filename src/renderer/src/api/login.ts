@@ -11,13 +11,7 @@ export const getCaptcha = () => {
   })
 }
 
-export const login = (username: string, password: string, code: string, uuid: string) => {
-  const data = {
-    username,
-    password,
-    code,
-    uuid
-  }
+export const login = (data: any) => {
   return request({
     url: '/login',
     headers: {
