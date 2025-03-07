@@ -115,6 +115,8 @@ const handleLoginClick = () => {
       useStore
         .login(loginForm)
         .then((res) => {
+          ElMessage.success('登录成功')
+          router.push('/')
           console.log(res)
         })
         .catch((err: any) => {

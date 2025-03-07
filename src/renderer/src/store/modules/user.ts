@@ -1,10 +1,11 @@
 import { login } from '@renderer/api/login'
 import { defineStore } from 'pinia'
+import { setToken, getToken } from '@renderer/utils/auth'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
     username: 'John Doe',
-    token: '1234567890',
+    token: getToken(),
     avatar: '',
     roles: [],
     permissions: []
@@ -15,6 +16,7 @@ export const useUserStore = defineStore('user', {
         login(data)
           .then((res: any) => {
             this.token = res.token
+            setToken(res.token)
             resolve(res)
           })
           .catch((err) => {

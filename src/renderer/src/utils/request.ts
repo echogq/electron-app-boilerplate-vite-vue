@@ -35,8 +35,11 @@ request.interceptors.response.use(
     if (code === 500) {
       openMessage(msg, 'error')
       return Promise.reject(new Error(msg))
+    } else if (code !== 200) {
+      return Promise.reject(msg)
+    } else {
+      return response.data
     }
-    return response.data
   },
   (error) => {
     return Promise.reject(error)

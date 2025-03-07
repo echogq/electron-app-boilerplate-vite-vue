@@ -4,6 +4,7 @@ const whiteList = ['/login', '/register', '/test', '/home']
 // 导航守卫
 export const beforeGuides = (to: any, from: any, next: any) => {
   console.log(to, from)
+  console.log('token:', getToken())
   if (!getToken() && !whiteList.includes(to.path)) {
     next({ path: '/login' })
     //next()
