@@ -1,5 +1,4 @@
 import { login } from '@renderer/api/login'
-import { defineStore } from 'pinia'
 import { setToken, getToken } from '@renderer/utils/auth'
 
 export const useUserStore = defineStore('user', {

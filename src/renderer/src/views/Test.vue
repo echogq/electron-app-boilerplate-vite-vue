@@ -8,7 +8,6 @@
 
 <script setup lang="ts">
 import { getUserInfo } from '@renderer/api/user'
-import { onMounted } from 'vue'
 import { useUserStore } from '@renderer/store/modules/user'
 const userStore = useUserStore()
 

@@ -9,7 +9,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
 const title = import.meta.env.RENDERER_VUE_APP_TITLE
 const router = useRouter()
 const login = () => {

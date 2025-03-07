@@ -51,9 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
 import { User, Lock, Search } from '@element-plus/icons-vue'
-import { ref, reactive, onUnmounted } from 'vue'
 import { getCaptcha } from '@renderer/api/login'
 import { useUserStore } from '@renderer/store/modules/user'
 const useStore = useUserStore()
