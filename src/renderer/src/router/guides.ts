@@ -6,7 +6,7 @@ export const beforeGuides = (to: any, from: any, next: any) => {
   console.log(to, from)
   console.log('token:', getToken())
   if (!getToken() && !whiteList.includes(to.path)) {
-    next({ path: '/login' })
+    next({ path: '/home' })
     //next()
   } else {
     next()
