@@ -21,5 +21,13 @@ export default tseslint.config(
       'vue/multi-word-component-names': 'off'
     }
   },
-  eslintConfigPrettier
+  eslintConfigPrettier,
+  {
+    globals: {
+      ElMessage: 'readonly',
+      ElMessageBox: 'readonly',
+      ElLoading: 'readonly',
+      ElNotification: 'readonly'
+    }
+  }
 )

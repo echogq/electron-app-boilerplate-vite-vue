@@ -1,7 +1,6 @@
 import axios from 'axios'
 //import { checkSystemProxy } from './checkProxy'
 import { config } from '@renderer/config'
-import { ElMessage } from 'element-plus'
 
 const request = axios.create({
   baseURL: config.apiUrl,
@@ -22,7 +21,7 @@ request.interceptors.request.use(
     return Promise.reject(error)
   }
 )
-const openMessage = (msg: string, type: 'success' | 'warning' | 'info' | 'error') => {
+const openMessage = (msg: string, type: string) => {
   ElMessage({
     message: msg,
     type: type

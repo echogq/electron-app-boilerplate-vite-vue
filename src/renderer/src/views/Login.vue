@@ -59,7 +59,7 @@ import { useUserStore } from '@renderer/store/modules/user'
 const useStore = useUserStore()
 const router = useRouter()
 const goHome = () => {
-  router.push('/')
+  router.push('/home')
 }
 
 const captchaImg = ref('')

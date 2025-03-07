@@ -2,7 +2,7 @@
 export const AppRoutes = [
   {
     path: '/',
-    component: () => import('@views/Home.vue')
+    component: () => import('@views/Main.vue')
   },
   {
     path: '/login',
@@ -15,5 +15,9 @@ export const AppRoutes = [
   {
     path: '/test',
     component: () => import('@views/Test.vue')
+  },
+  {
+    path: '/home',
+    component: () => import('@views/Home.vue')
   }
 ]

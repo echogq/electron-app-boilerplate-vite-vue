@@ -8,7 +8,7 @@ import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 let publicDir = resolve(__dirname, 'resources')
 let envDir = resolve(__dirname, 'build')
-//const pathSrc = resolve(__dirname, 'src/renderer/src')
+const pathSrc = resolve(__dirname, 'src/renderer/src')
 export default defineConfig({
   main: {
     plugins: [externalizeDepsPlugin()]
@@ -50,8 +50,8 @@ export default defineConfig({
           ElementPlusResolver(),
           // 自动导入 Icons 组件
           IconsResolver({ prefix: 'icon' })
-        ]
-        //dts: resolve(pathSrc, 'auto-imports.d.ts')
+        ],
+        dts: resolve(pathSrc, 'auto-imports.d.ts') // 自动导入类型
       }),
       Components({
         resolvers: [

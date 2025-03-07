@@ -1,9 +1,12 @@
+import { getToken } from '@renderer/utils/auth'
+
+const whiteList = ['/login', '/register', '/test', '/home']
 // 导航守卫
 export const beforeGuides = (to: any, from: any, next: any) => {
   console.log(to, from)
-  if (!localStorage.getItem('token') && to.path !== '/login') {
-    //next({ path: '/login' })
-    next()
+  if (!getToken() && !whiteList.includes(to.path)) {
+    next({ path: '/login' })
+    //next()
   } else {
     next()
   }
