@@ -1,7 +1,7 @@
 import axios from 'axios'
 //import { checkSystemProxy } from './checkProxy'
 import { config } from '@renderer/config'
-
+import { getToken } from './auth'
 const request = axios.create({
   baseURL: config.apiUrl,
   timeout: 5000
@@ -15,6 +15,10 @@ const request = axios.create({
 
 request.interceptors.request.use(
   (config) => {
+    const token = getToken()
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
     return config
   },
   (error) => {
@@ -32,7 +36,10 @@ request.interceptors.response.use(
   (response) => {
     const code = response.data.code
     const msg = response.data.msg
-    if (code === 500) {
+    if (code === 401) {
+      openMessage(msg, 'error')
+      return Promise.reject('登录已过期，请重新登录')
+    } else if (code === 500) {
       openMessage(msg, 'error')
       return Promise.reject(new Error(msg))
     } else if (code !== 200) {

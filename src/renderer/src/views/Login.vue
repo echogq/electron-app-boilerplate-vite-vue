@@ -43,8 +43,10 @@
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-link type="primary" underline>忘记密码</el-link>
-        <el-link type="primary" underline @click="goHome" class="ml-20 float-right">回首页</el-link>
+        <div class="footer-links">
+          <el-link type="primary" underline>忘记密码</el-link>
+          <el-link type="primary" underline @click="goHome">回首页</el-link>
+        </div>
       </template>
     </el-card>
   </div>
@@ -64,7 +66,7 @@ const captchaImg = ref('')
 const countdown = ref(0)
 const isDisabled = ref(false)
 const timer = ref()
-
+const redirect = ref('')
 const getCode = () => {
   if (isDisabled.value) return
   getCaptcha().then((res: any) => {
@@ -90,6 +92,13 @@ const handleCodeClick = () => {
 //     }
 //   }, 1000)
 // }
+watch(
+  router.currentRoute,
+  (to) => {
+    redirect.value = to.query ? (to.query.redirect as string) : ''
+  },
+  { immediate: true }
+)
 
 const loginForm = reactive({
   username: 'admin',
@@ -114,8 +123,16 @@ const handleLoginClick = () => {
         .login(loginForm)
         .then((res) => {
           ElMessage.success('登录成功')
-          router.push('/')
-          console.log(res)
+          const query = router.currentRoute.value.query
+          const otherQueryParams = Object.keys(query).reduce((acc, cur) => {
+            if (cur !== 'redirect') {
+              acc[cur] = query[cur]
+            }
+            return acc
+          }, {})
+          router.push({ path: redirect.value || '/', query: otherQueryParams })
+          console.log('redirect', redirect.value)
+          console.log('res', res)
         })
         .catch((err: any) => {
           console.log(err)
@@ -158,5 +175,11 @@ getCode()
   justify-content: center;
   align-items: center;
   font-size: 14px;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 </style>
