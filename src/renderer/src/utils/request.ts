@@ -22,13 +22,19 @@ request.interceptors.request.use(
     return Promise.reject(error)
   }
 )
+const openMessage = (msg: string, type: 'success' | 'warning' | 'info' | 'error') => {
+  ElMessage({
+    message: msg,
+    type: type
+  } as any) // Type assertion to bypass the type check temporarily
+}
 
 request.interceptors.response.use(
   (response) => {
     const code = response.data.code
     const msg = response.data.msg
     if (code === 500) {
-      ElMessage({ message: msg, type: 'error' })
+      openMessage(msg, 'error')
       return Promise.reject(new Error(msg))
     }
     return response.data
