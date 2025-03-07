@@ -1,6 +1,6 @@
 import { getToken } from '@renderer/utils/auth'
 
-const whiteList = ['/login', '/register', '/test', '/home']
+const whiteList = ['/login', '/register', '/home']
 // 导航守卫
 export const beforeGuides = (to: any, from: any, next: any) => {
   console.log(to, from)
